@@ -4,6 +4,7 @@ import matplotlib.image as mpimg
 import numpy as np
 import cv2
 import math
+from imagefunctions import *
 
 def grayscale(img):
     """Applies the Grayscale transform
