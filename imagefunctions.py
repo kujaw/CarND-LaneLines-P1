@@ -66,90 +66,92 @@ def draw_lines(img, lines, color=[255, 0, 0], thickness=5):
     this function with the weighted_img() function below
     """
 
-    #m_left = []
-    #x1_left = []
-    #x2_left = []
-    #y1_left = []
-    #y2_left = []
+    m_left = []
+    x1_left = []
+    x2_left = []
+    y1_left = []
+    y2_left = []
 #
-    #m_right = []
-    #x1_right = []
-    #x2_right = []
-    #y1_right = []
-    #y2_right = []
+    m_right = []
+    x1_right = []
+    x2_right = []
+    y1_right = []
+    y2_right = []
 #
-    #y_max = img.shape[0]
-    #y_min = 320
+    y_max = img.shape[0]
+    y_min = 320
 #
-    #m_tresh_horiz = 0.5
-    #m_tresh_vert = 0.9
+    m_tresh_horiz = 0.5
+    m_tresh_vert = 0.9
 #
-    #for line in lines:
-    #    for x1,y1,x2,y2 in line:
-    #        m=(y2-y1)/(x2-x1)
-    #        # remove random horizontal or vertical lines
-    #        if abs(m) < m_tresh_horiz or abs(m) > m_tresh_vert:
-    #            pass
-    #        else:
-    #            # left line
-    #            if m < 0:
-    #                m_left.append(m)
-    #                x1_left.append(x1)
-    #                x2_left.append(x2)
-    #                y1_left.append(y1)
-    #                y2_left.append(y2)
-    #            # right line
-    #            elif m > 0:
-    #                m_right.append(m)
-    #                x1_right.append(x1)
-    #                x2_right.append(x2)
-    #                y1_right.append(y1)
-    #                y2_right.append(y2)
-#
-    ## left
-    #m_left_median = np.median(m_left)
-    #x1_left_median = np.median(x1_left)
-    #x2_left_median = np.median(x2_left)
-    #y1_left_median = np.median(y1_left)
-    #y2_left_median = np.median(y2_left)
-#
-    #b_left = y1_left_median - m_left_median * x1_left_median
-    #x_left_top = int((y_min - b_left) / m_left_median)
-    #x_left_bottom = int((y_max - b_left) / m_left_median)
-#
-    #cv2.line(img, (x_left_bottom, y_max), (x_left_top, y_min), color, thickness)
-    #print("{} {} {} {} {}".format(m_left_median, x1_left_median, y1_left_median,
-    #                              x2_left_median, y2_left_median))
-#
-    ## right
-    #m_right_median = np.median(m_right)
-    #x1_right_median = np.median(x1_right)
-    #x2_right_median = np.median(x2_right)
-    #y1_right_median = np.median(y1_right)
-    #y2_right_median = np.median(y2_right)
-#
-    #b_right= y1_right_median - m_right_median * x1_right_median
-    #x_right_top = int((y_min - b_right) / m_right_median)
-    #x_right_bottom = int((y_max - b_right) / m_right_median)
-#
-    #cv2.line(img, (x_right_bottom, y_max), (x_right_top, y_min), color, thickness)
-    #print("{} {} {} {} {}".format(m_right_median, x1_right_median, y1_right_median,
-    #                              x2_right_median, y2_right_median))
-    #print("\n")
-
-    slope_tresh_horiz = 0.5
-    slope_tresh_vert = 1.2
     for line in lines:
         for x1,y1,x2,y2 in line:
-            slope=(y2-y1)/(x2-x1)
-            if abs(slope) < slope_tresh_horiz or abs(slope) > slope_tresh_vert:
+            m=(y2-y1)/(x2-x1)
+            # remove random horizontal or vertical lines
+            if abs(m) < m_tresh_horiz or abs(m) > m_tresh_vert:
                 pass
             else:
-                cv2.line(img, (x1, y1), (x2, y2), color, thickness)
+                # left line
+                if m < 0:
+                    m_left.append(m)
+                    x1_left.append(x1)
+                    x2_left.append(x2)
+                    y1_left.append(y1)
+                    y2_left.append(y2)
+                # right line
+                elif m > 0:
+                    m_right.append(m)
+                    x1_right.append(x1)
+                    x2_right.append(x2)
+                    y1_right.append(y1)
+                    y2_right.append(y2)
+#
+    # left
+    m_left_median = np.median(m_left)
+    x1_left_median = np.median(x1_left)
+    x2_left_median = np.median(x2_left)
+    y1_left_median = np.median(y1_left)
+    y2_left_median = np.median(y2_left)
+#
+    b_left = y1_left_median - m_left_median * x1_left_median
+    x_left_top = int((y_min - b_left) / m_left_median)
+    x_left_bottom = int((y_max - b_left) / m_left_median)
+#
+    cv2.line(img, (x_left_bottom, y_max), (x_left_top, y_min), color, thickness)
+    print("{} {} {} {} {}".format(m_left_median, x1_left_median, y1_left_median,
+                                  x2_left_median, y2_left_median))
+#
+    # right
+    m_right_median = np.median(m_right)
+    x1_right_median = np.median(x1_right)
+    x2_right_median = np.median(x2_right)
+    y1_right_median = np.median(y1_right)
+    y2_right_median = np.median(y2_right)
+#
+    b_right= y1_right_median - m_right_median * x1_right_median
+    x_right_top = int((y_min - b_right) / m_right_median)
+    x_right_bottom = int((y_max - b_right) / m_right_median)
+#
+    cv2.line(img, (x_right_bottom, y_max), (x_right_top, y_min), color, thickness)
+    print("{} {} {} {} {}".format(m_right_median, x1_right_median, y1_right_median,
+                                  x2_right_median, y2_right_median))
+    print("\n")
 
-    cv2.line(img, (0,imshape[0]), (450, 320), color, thickness)
-    cv2.line(img, (0,imshape[0]), (450, 320), color, thickness)
-    vertices = np.array([[(0,imshape[0]),(450, 320), (490, 320), (imshape[1],imshape[0])]], dtype=np.int32)
+#   imshape = img.shape
+#   slope_tresh_horiz = 0.5
+#   slope_tresh_vert = 1.2
+#   for line in lines:
+#       for x1,y1,x2,y2 in line:
+#           slope=(y2-y1)/(x2-x1)
+#           if abs(slope) < slope_tresh_horiz or abs(slope) > slope_tresh_vert:
+#               pass
+#           else:
+#               cv2.line(img, (x1, y1), (x2, y2), color, thickness)
+#
+    cv2.line(img, (int(imshape[1]*0.05),imshape[0]), (int(imshape[1]*0.425), 320), color, thickness)
+    cv2.line(img, (int(imshape[1]*0.95),imshape[0]), (int(imshape[1]*0.575), 320), color, thickness)
+    vertices = np.array([[(int(imshape[1]*0.05),imshape[0]),(int(imshape[1])*0.425, 320),
+                          (int(imshape[1])*0.575, 320), (int(imshape[1]*0.95),imshape[0])]], dtype=np.int32)
 
 def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap):
     """

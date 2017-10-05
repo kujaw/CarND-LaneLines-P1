@@ -23,7 +23,9 @@ for filename in os.listdir('test_videos_frames'):
 
     # Define region of interest
     imshape = image.shape
-    vertices = np.array([[(0,imshape[0]),(450, 320), (490, 320), (imshape[1],imshape[0])]], dtype=np.int32)
+    vertices = np.array([[(int(imshape[1]*0.05),imshape[0]),(int(imshape[1])*0.425, 320),
+                          (int(imshape[1])*0.575, 320), (int(imshape[1]*0.95),imshape[0])]], dtype=np.int32)
+    #vertices = np.array([[(0,imshape[0]),(450, 320), (490, 320), (imshape[1],imshape[0])]], dtype=np.int32)
     masked_edges = region_of_interest(edges, vertices)
 
     # Define the Hough transform parameters
@@ -48,7 +50,7 @@ for filename in os.listdir('test_videos_frames'):
     #lines_edges = cv2.addWeighted(color_edges, 0.8, line_image, 1, 0)
     lines_edges = weighted_img(lines, image, α=0.8, β=1., λ=0.)
 
-    #plt.imshow(lines_edges)
-    plt.imshow(masked_edges)
+    plt.imshow(lines_edges)
+    #plt.imshow(masked_edges)
     plt.title('{}'.format(filename))
     plt.show()
