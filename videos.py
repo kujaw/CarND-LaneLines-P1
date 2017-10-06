@@ -15,28 +15,27 @@ def process_image(image):
     gray = grayscale(image)
 
     # Define a kernel size and apply Gaussian smoothing
-    kernel_size = 5
+    kernel_size = 5 
     blur_gray = gaussian_blur(gray, kernel_size)
 
     # Define our parameters for Canny and apply
-    low_threshold = 60
-    high_threshold = 180
+    low_threshold = 50
+    high_threshold = 150
     edges = canny(blur_gray, low_threshold, high_threshold)
 
     # Define region of interest
     imshape = image.shape
-    vertices = np.array([[(int(imshape[1]*0.05),imshape[0]),(int(imshape[1])*0.425, 320),
-                          (int(imshape[1])*0.575, 320), (int(imshape[1]*0.95),imshape[0])]], dtype=np.int32)
-    #vertices = np.array([[(0,imshape[0]),(450, 320), (490, 320), (imshape[1],imshape[0])]], dtype=np.int32)
+    vertices = np.array([[(int(imshape[1]*0.05),imshape[0]),(int(imshape[1])*0.425, int(imshape[0]*0.59)),
+                          (int(imshape[1])*0.575, int(imshape[0]*0.59)), (int(imshape[1]*0.95),imshape[0])]], dtype=np.int32)
     masked_edges = region_of_interest(edges, vertices)
 
     # Define the Hough transform parameters
     # Make a blank the same size as our image to draw on
     rho = 2 # distance resolution in pixels of the Hough grid
     theta = np.pi/180 # angular resolution in radians of the Hough grid
-    threshold = 10    # minimum number of votes (intersections in Hough grid cell)
-    min_line_length = 15 #minimum number of pixels making up a line
-    max_line_gap = 15    # maximum gap in pixels between connectable line segments
+    threshold = 15    # minimum number of votes (intersections in Hough grid cell)
+    min_line_length = 40 #minimum number of pixels making up a line
+    max_line_gap = 20    # maximum gap in pixels between connectable line segments
     line_image = np.copy(image)*0 # creating a blank to draw lines on
 
     # Run Hough on edge detected image
@@ -53,8 +52,7 @@ def process_image(image):
     lines_edges = weighted_img(lines, image, α=0.8, β=1., λ=0.)
 
     return lines_edges
-    #plt.imshow(lines_edges)
-    #plt.imshow(masked_edges)
+    #return masked_edges
     #plt.title('{}'.format(filename))
     #plt.show()
 
@@ -67,6 +65,7 @@ def process_image(image):
 #
 #clip1.reader.close()
 #clip1.audio.reader.close_proc()
+
 yellow_output = 'test_videos_output/solidYellowLeft.mp4'
 
 clip2 = VideoFileClip('test_videos/solidYellowLeft.mp4')#.subclip(0,5)
@@ -79,3 +78,13 @@ yellow_clip.write_videofile(yellow_output, audio=False)
 
 clip2.reader.close()
 clip2.audio.reader.close_proc()
+
+#challenge_output = 'test_videos_output/challenge.mp4'
+#
+#clip3 = VideoFileClip('test_videos/challenge.mp4')#.subclip(5)
+#challenge_clip = clip3.fl_image(process_image)
+#
+#challenge_clip.write_videofile(challenge_output, audio=False)
+#
+#clip3.reader.close()
+#clip3.audio.reader.close_proc()

@@ -65,25 +65,26 @@ def draw_lines(img, lines, color=[255, 0, 0], thickness=5):
     If you want to make the lines semi-transparent, think about combining
     this function with the weighted_img() function below
     """
+    imshape = img.shape
 
     m_left = []
     x1_left = []
     x2_left = []
     y1_left = []
     y2_left = []
-#
+
     m_right = []
     x1_right = []
     x2_right = []
     y1_right = []
     y2_right = []
-#
+
     y_max = img.shape[0]
-    y_min = 320
-#
+    y_min = int(img.shape[0]*0.59) 
+
     m_tresh_horiz = 0.5
-    m_tresh_vert = 0.9
-#
+    m_tresh_vert = 1
+
     for line in lines:
         for x1,y1,x2,y2 in line:
             m=(y2-y1)/(x2-x1)
@@ -105,53 +106,56 @@ def draw_lines(img, lines, color=[255, 0, 0], thickness=5):
                     x2_right.append(x2)
                     y1_right.append(y1)
                     y2_right.append(y2)
-#
+
     # left
     m_left_median = np.median(m_left)
     x1_left_median = np.median(x1_left)
     x2_left_median = np.median(x2_left)
     y1_left_median = np.median(y1_left)
     y2_left_median = np.median(y2_left)
-#
+
     b_left = y1_left_median - m_left_median * x1_left_median
     x_left_top = int((y_min - b_left) / m_left_median)
     x_left_bottom = int((y_max - b_left) / m_left_median)
-#
+
     cv2.line(img, (x_left_bottom, y_max), (x_left_top, y_min), color, thickness)
-    print("{} {} {} {} {}".format(m_left_median, x1_left_median, y1_left_median,
-                                  x2_left_median, y2_left_median))
-#
+    #print("{} {} {} {} {}".format(m_left_median, x1_left_median, y1_left_median,
+    #                              x2_left_median, y2_left_median))
+
     # right
     m_right_median = np.median(m_right)
     x1_right_median = np.median(x1_right)
     x2_right_median = np.median(x2_right)
     y1_right_median = np.median(y1_right)
     y2_right_median = np.median(y2_right)
-#
+
     b_right= y1_right_median - m_right_median * x1_right_median
     x_right_top = int((y_min - b_right) / m_right_median)
     x_right_bottom = int((y_max - b_right) / m_right_median)
-#
-    cv2.line(img, (x_right_bottom, y_max), (x_right_top, y_min), color, thickness)
-    print("{} {} {} {} {}".format(m_right_median, x1_right_median, y1_right_median,
-                                  x2_right_median, y2_right_median))
-    print("\n")
 
-#   imshape = img.shape
-#   slope_tresh_horiz = 0.5
-#   slope_tresh_vert = 1.2
-#   for line in lines:
-#       for x1,y1,x2,y2 in line:
-#           slope=(y2-y1)/(x2-x1)
-#           if abs(slope) < slope_tresh_horiz or abs(slope) > slope_tresh_vert:
-#               pass
-#           else:
-#               cv2.line(img, (x1, y1), (x2, y2), color, thickness)
-#
-    cv2.line(img, (int(imshape[1]*0.05),imshape[0]), (int(imshape[1]*0.425), 320), color, thickness)
-    cv2.line(img, (int(imshape[1]*0.95),imshape[0]), (int(imshape[1]*0.575), 320), color, thickness)
-    vertices = np.array([[(int(imshape[1]*0.05),imshape[0]),(int(imshape[1])*0.425, 320),
-                          (int(imshape[1])*0.575, 320), (int(imshape[1]*0.95),imshape[0])]], dtype=np.int32)
+    cv2.line(img, (x_right_bottom, y_max), (x_right_top, y_min), color, thickness)
+    #print("{} {} {} {} {}".format(m_right_median, x1_right_median, y1_right_median,
+    #                              x2_right_median, y2_right_median))
+    #print("\n")
+
+    #imshape = img.shape
+    #slope_tresh_horiz = 0.6
+    #slope_tresh_vert = 1
+    #for line in lines:
+    #    for x1,y1,x2,y2 in line:
+    #        slope=(y2-y1)/(x2-x1)
+    #        if abs(slope) < slope_tresh_horiz or abs(slope) > slope_tresh_vert:
+    #            pass
+    #        else:
+    #            cv2.line(img, (x1, y1), (x2, y2), color, thickness)
+
+    cv2.line(img, (int(imshape[1]*0.05),imshape[0]), (int(imshape[1]*0.425), int(imshape[0]*0.59)), color, thickness)
+    cv2.line(img, (int(imshape[1]*0.95),imshape[0]), (int(imshape[1]*0.575), int(imshape[0]*0.59)), color, thickness)
+    #vertices = np.array([[(int(imshape[1]*0.05),imshape[0]),(int(imshape[1])*0.425, 320),
+    #                      (int(imshape[1])*0.575, 320), (int(imshape[1]*0.95),imshape[0])]], dtype=np.int32)
+
+def smoothing_function():
+
 
 def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap):
     """
