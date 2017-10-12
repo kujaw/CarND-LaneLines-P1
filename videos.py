@@ -8,8 +8,8 @@ from moviepy.editor import VideoFileClip
 from IPython.display import HTML
 
 def process_image(image):
-    
-    image = mpimg.imread(image)
+
+    #image = mpimg.imread(image)
     # Read in and grayscale the image
     gray = grayscale(image)
 
@@ -26,7 +26,7 @@ def process_image(image):
     imshape = image.shape
     vertices = np.array([[(int(imshape[1]*0.1),imshape[0]),
                           (int(imshape[1])*0.425, int(imshape[0]*0.61)),
-                          (int(imshape[1])*0.575, int(imshape[0]*0.61)), 
+                          (int(imshape[1])*0.575, int(imshape[0]*0.61)),
                           (int(imshape[1]*0.95),imshape[0])]], dtype=np.int32)
     masked_edges = region_of_interest(edges, vertices)
 
@@ -49,7 +49,7 @@ def process_image(image):
     # Draw the lines on the edge image
     lines_edges = weighted_img(lines, image, α=0.8, β=1., λ=0.)
 
-    return color_edges 
+    return np.dstack(masked_edges,masked_edges,masked_edges)
 
 #white_output = 'test_videos_output/solidWhiteRight.mp4'
 #clip1 = VideoFileClip("test_videos/solidWhiteRight.mp4")
@@ -75,9 +75,9 @@ clip3 = VideoFileClip('test_videos/challenge.mp4').subclip(3,)
 challenge_clip = clip3.fl_image(process_image)
 
 # create images of frames for easier debugging
-challenge_clip.write_images_sequence("test_videos_frames/frame%03da.jpg")
+#challenge_clip.write_images_sequence("test_videos_frames/frame%03da.jpg")
 
-#challenge_clip.write_videofile(challenge_output, audio=False)
+challenge_clip.write_videofile(challenge_output, audio=False)
 
 clip3.reader.close()
 clip3.audio.reader.close_proc()

@@ -82,7 +82,7 @@ def draw_lines(img, lines, color=[255, 0, 0], thickness=5):
     #y2_right = []
 
     #y_max = img.shape[0]
-    #y_min = int(img.shape[0]*0.59) 
+    #y_min = int(img.shape[0]*0.59)
 
     #m_tresh_horiz = 0.5
     #m_tresh_vert = 0.8
@@ -173,9 +173,10 @@ def draw_lines(img, lines, color=[255, 0, 0], thickness=5):
             else:
                 cv2.line(img, (x1, y1), (x2, y2), color, thickness)
 
-    #cv2.line(img, (int(img.shape[1]*0.1),img.shape[0]), 
+    ## Region of interest lines
+    #cv2.line(img, (int(img.shape[1]*0.1),img.shape[0]),
     #              (int(img.shape[1]*0.425), int(img.shape[0]*0.61)), color, thickness)
-    #cv2.line(img, (int(img.shape[1]*0.95),img.shape[0]), 
+    #cv2.line(img, (int(img.shape[1]*0.95),img.shape[0]),
     #              (int(img.shape[1]*0.575), int(img.shape[0]*0.61)), color, thickness)
 
 def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap):

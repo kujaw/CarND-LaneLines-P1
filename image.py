@@ -25,7 +25,7 @@ for filename in os.listdir('test_images'):
     imshape = image.shape
     vertices = np.array([[(int(imshape[1]*0.1),imshape[0]),
                           (int(imshape[1])*0.425, int(imshape[0]*0.61)),
-                          (int(imshape[1])*0.575, int(imshape[0]*0.61)), 
+                          (int(imshape[1])*0.575, int(imshape[0]*0.61)),
                           (int(imshape[1]*0.95),imshape[0])]], dtype=np.int32)
     masked_edges = region_of_interest(edges, vertices)
 
@@ -52,6 +52,7 @@ for filename in os.listdir('test_images'):
     #plt.imshow(lines_edges)
     #plt.title('{}'.format(filename))
     #plt.show()
-    
+
     ## Write image
     cv2.imwrite("test_images/aa{}".format(filename), cv2.cvtColor(lines_edges, cv2.COLOR_RGB2BGR))
+    #cv2.imwrite("test_images/aa{}".format(filename), lines_edges)
