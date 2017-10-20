@@ -14,8 +14,6 @@ def grayscale(img):
     (assuming your grayscaled image is called 'gray')
     you should call plt.imshow(gray, cmap='gray')"""
     return cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-    # Or use BGR2GRAY if you read an image with cv2.imread()
-    #return cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 def canny(img, low_threshold, high_threshold):
     """Applies the Canny transform"""
@@ -69,115 +67,119 @@ def draw_lines(img, lines, color=[255, 0, 0], thickness=5):
     this function with the weighted_img() function below
     """
 
-    #m_left = []
-    #x1_left = []
-    #x2_left = []
-    #y1_left = []
-    #y2_left = []
+    m_left = []
+    x1_left = []
+    x2_left = []
+    y1_left = []
+    y2_left = []
 
-    #m_right = []
-    #x1_right = []
-    #x2_right = []
-    #y1_right = []
-    #y2_right = []
+    m_right = []
+    x1_right = []
+    x2_right = []
+    y1_right = []
+    y2_right = []
 
-    #y_max = img.shape[0]
-    #y_min = int(img.shape[0]*0.59)
+    y_max = img.shape[0]
+    y_min = int(img.shape[0]*0.59)
 
-    #m_tresh_horiz = 0.5
-    #m_tresh_vert = 0.8
+    m_tresh_horiz = 0.5
+    m_tresh_vert = 0.8
 
-    #XLeft = []
-    #yLeft = []
-    #XRight = []
-    #yRight = []
+    XLeft = []
+    yLeft = []
+    XRight = []
+    yRight = []
 
-    #for line in lines:
-    #    for x1,y1,x2,y2 in line:
-    #        m=(y2-y1)/(x2-x1)
-    #        # remove random horizontal or vertical lines
-    #        if abs(m) < m_tresh_horiz or abs(m) > m_tresh_vert:
-    #            pass
-    #        else:
-    #            # left line
-    #            if m < 0:
-    #                m_left.append(m)
-    #                x1_left.append(x1)
-    #                x2_left.append(x2)
-    #                y1_left.append(y1)
-    #                y2_left.append(y2)
-    #                XLeft.append(x1)
-    #                XLeft.append(x2)
-    #                yLeft.append(y1)
-    #                yLeft.append(y2)
-    #            # right line
-    #            elif m > 0:
-    #                m_right.append(m)
-    #                x1_right.append(x1)
-    #                x2_right.append(x2)
-    #                y1_right.append(y1)
-    #                y2_right.append(y2)
-    #                XRight.append(x1)
-    #                XRight.append(x2)
-    #                yRight.append(y1)
-    #                yRight.append(y2)
-
-    ## left
-    #m_left_median = np.median(m_left)
-    #x1_left_median = np.median(x1_left)
-    #x2_left_median = np.median(x2_left)
-    #y1_left_median = np.median(y1_left)
-    #y2_left_median = np.median(y2_left)
-
-    #b_left = y1_left_median - m_left_median * x1_left_median
-
-    ## right
-    #m_right_median = np.median(m_right)
-    #x1_right_median = np.median(x1_right)
-    #x2_right_median = np.median(x2_right)
-    #y1_right_median = np.median(y1_right)
-    #y2_right_median = np.median(y2_right)
-
-    ##ransac = linear_model.RANSACRegressor()
-    ##XLeft = np.array(XLeft)
-    ##yLeft = np.array(yLeft)
-    ##ransac.fit(XLeft, yLeft)
-
-    #b_right= y1_right_median - m_right_median * x1_right_median
-
-    ## Average lines using last 5 frames
-    #previous_frames.append((m_left_median, b_left, m_right_median, b_right))
-    #if len(previous_frames) > 0:
-    #    median = np.median(previous_frames, -2)
-    #    m_left = median[0]
-    #    b_left = median[1]
-    #    m_right = median[2]
-    #    b_right = median[3]
-
-    #x1_left = int((y_max - b_left) / m_left)
-    #x2_left = int((y_min - b_left) / m_left)
-    #x1_right = int((y_max - b_right) / m_right)
-    #x2_right = int((y_min - b_right) / m_right)
-
-    ## Draw left and right line
-    #cv2.line(img, (x1_left, y_max), (x2_left, y_min), color, thickness)
-    #cv2.line(img, (x1_right, y_max), (x2_right, y_min), color, thickness)
-
-    slope_tresh_horiz = 0.5
-    slope_tresh_vert = 0.8
     for line in lines:
         for x1,y1,x2,y2 in line:
-            slope=(y2-y1)/(x2-x1)
-            if abs(slope) < slope_tresh_horiz or abs(slope) > slope_tresh_vert:
-                pass
-            else:
-                cv2.line(img, (x1, y1), (x2, y2), color, thickness)
+            m=(y2-y1)/(x2-x1)
+            # remove random horizontal or vertical lines
+            if m_tresh_horiz < abs(m) < m_tresh_vert:
+                # left line
+                if m < 0:
+                    m_left.append(m)
+                    x1_left.append(x1)
+                    x2_left.append(x2)
+                    y1_left.append(y1)
+                    y2_left.append(y2)
+                    XLeft.append(x1)
+                    XLeft.append(x2)
+                    yLeft.append(y1)
+                    yLeft.append(y2)
+                # right line
+                elif m > 0:
+                    m_right.append(m)
+                    x1_right.append(x1)
+                    x2_right.append(x2)
+                    y1_right.append(y1)
+                    y2_right.append(y2)
+                    XRight.append(x1)
+                    XRight.append(x2)
+                    yRight.append(y1)
+                    yRight.append(y2)
 
-    ## Region of interest lines
-    #cv2.line(img, (int(img.shape[1]*0.1),img.shape[0]),
-    #              (int(img.shape[1]*0.425), int(img.shape[0]*0.61)), color, thickness)
-    #cv2.line(img, (int(img.shape[1]*0.95),img.shape[0]),
-    #              (int(img.shape[1]*0.575), int(img.shape[0]*0.61)), color, thickness)
+    # left
+    m_left_median = np.median(m_left)
+    x1_left_median = np.median(x1_left)
+    x2_left_median = np.median(x2_left)
+    y1_left_median = np.median(y1_left)
+    y2_left_median = np.median(y2_left)
+
+    b_left = y1_left_median - m_left_median * x1_left_median
+
+    # right
+    m_right_median = np.median(m_right)
+    x1_right_median = np.median(x1_right)
+    x2_right_median = np.median(x2_right)
+    y1_right_median = np.median(y1_right)
+    y2_right_median = np.median(y2_right)
+
+    #ransac = linear_model.RANSACRegressor()
+    #XLeft = np.array(XLeft)
+    #yLeft = np.array(yLeft)
+    #ransac.fit(XLeft, yLeft)
+
+    b_right= y1_right_median - m_right_median * x1_right_median
+
+    # Average lines using last 5 frames
+    previous_frames.append((m_left_median, b_left, m_right_median, b_right))
+    if len(previous_frames) > 0:
+        median = np.median(previous_frames, -2)
+        m_left = median[0]
+        b_left = median[1]
+        m_right = median[2]
+        b_right = median[3]
+
+    x1_left = int((y_max - b_left) / m_left)
+    x2_left = int((y_min - b_left) / m_left)
+    x1_right = int((y_max - b_right) / m_right)
+    x2_right = int((y_min - b_right) / m_right)
+
+    # Draw left and right line
+    cv2.line(img, (x1_left, y_max), (x2_left, y_min), color, thickness)
+    cv2.line(img, (x1_right, y_max), (x2_right, y_min), color, thickness)
+
+    #slope_tresh_horiz = 0.5
+    #slope_tresh_vert = 0.8
+    #for line in lines:
+    #    for x1,y1,x2,y2 in line:
+    #        slope=(y2-y1)/(x2-x1)
+    #        if abs(slope) < slope_tresh_horiz or abs(slope) > slope_tresh_vert:
+    #            pass
+    #        else:
+    #            cv2.line(img, (x1, y1), (x2, y2), color, thickness)
+
+    #imshape = img.shape
+    #vertices = np.array([[(int(imshape[1]*0.1), imshape[0]),
+    #                      (int(imshape[1]*0.425), int(imshape[0]*0.61)),
+    #                      (int(imshape[1]*0.595), int(imshape[0]*0.61)),
+    #                      (int(imshape[1]*0.97),imshape[0]),
+    #                      (int(imshape[1]*0.82), imshape[0]),
+    #                      (int(imshape[1]*0.6), int(imshape[0]*0.75)),
+    #                      (int(imshape[1]*0.45), int(imshape[0]*0.75)),
+    #                      (int(imshape[1]*0.25), imshape[0])]],
+    #                      dtype=np.int32)
+    #cv2.fillPoly(img, vertices, [0,0,255])
 
 def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap):
     """
