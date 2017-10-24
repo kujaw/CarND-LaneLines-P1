@@ -8,7 +8,7 @@ Overview
 
 This is a first project for Self Driving Car Nanodegree on Udacity.
 
-To run it simply install necesarry dependencies (listed in the bottom) and run P1.ipynb file in Jupyter Notebook.
+To run it simply install necessary dependencies (listed in the bottom) and run P1.ipynb file in Jupyter Notebook.
 
 There are also three files included:
 - functions.py
@@ -21,10 +21,10 @@ Feel free to do anything with this project, play, expermient and if you have som
 Dependencies
 ---
 
-jupyter (1.0.0)
-numpy (1.13.3)
-opencv-python (3.3.0.10)
-Pillow (4.3.0)
-scipy (0.19.1)
-matplotlib (2.1.0)
-moviepy (0.2.3.2)
+-jupyter (1.0.0)
+-numpy (1.13.3)
+-opencv-python (3.3.0.10)
+-Pillow (4.3.0)
+-scipy (0.19.1)
+-matplotlib (2.1.0)
+-moviepy (0.2.3.2)
