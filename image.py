@@ -55,17 +55,13 @@ for i in range(1):
     # Output "lines" is an array containing endpoints of detected line segments
     lines = hough_lines(masked_edges, rho, theta, threshold, min_line_length, max_line_gap)
 
-    # Create a "color" binary image to combine with line image
-    color_edges = np.dstack((edges, edges, edges))
-
     # Draw the lines on the edge image
     lines_edges = weighted_img(lines, image, α=0.8, β=1., λ=0.)
 
     # Show image
-    plt.imshow(lines_edges)
+    plt.imshow(gray)
     plt.title('{}'.format(filename))
     plt.show()
 
     ## Write image
-    cv2.imwrite("test_images/{}b.jpg".format(filename), cv2.cvtColor(lines_edges, cv2.COLOR_RGB2BGR))
-    #cv2.imwrite("test_images/frame023b.jpg", lines_edges)#, cv2.cvtColor(lines_edges, cv2.COLOR_RGB2BGR))
+    cv2.imwrite("test_images/{}g.jpg".format(filename[:-4]), cv2.cvtColor(lines_edges, cv2.COLOR_RGB2BGR))

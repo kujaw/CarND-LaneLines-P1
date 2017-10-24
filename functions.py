@@ -67,6 +67,9 @@ def draw_lines(img, lines, color=[255, 0, 0], thickness=5):
     this function with the weighted_img() function below
     """
 
+    m_tresh_horiz = 0.5
+    m_tresh_vert = 0.8
+
     m_left = []
     x1_left = []
     x2_left = []
@@ -81,9 +84,6 @@ def draw_lines(img, lines, color=[255, 0, 0], thickness=5):
 
     y_max = img.shape[0]
     y_min = int(img.shape[0]*0.59)
-
-    m_tresh_horiz = 0.5
-    m_tresh_vert = 0.8
 
     XLeft = []
     yLeft = []
@@ -141,7 +141,7 @@ def draw_lines(img, lines, color=[255, 0, 0], thickness=5):
 
     b_right= y1_right_median - m_right_median * x1_right_median
 
-    # Average lines using last 5 frames
+    # Average lines using last 10 frames
     previous_frames.append((m_left_median, b_left, m_right_median, b_right))
     if len(previous_frames) > 0:
         median = np.median(previous_frames, -2)
@@ -159,14 +159,10 @@ def draw_lines(img, lines, color=[255, 0, 0], thickness=5):
     cv2.line(img, (x1_left, y_max), (x2_left, y_min), color, thickness)
     cv2.line(img, (x1_right, y_max), (x2_right, y_min), color, thickness)
 
-    #slope_tresh_horiz = 0.5
-    #slope_tresh_vert = 0.8
     #for line in lines:
     #    for x1,y1,x2,y2 in line:
-    #        slope=(y2-y1)/(x2-x1)
-    #        if abs(slope) < slope_tresh_horiz or abs(slope) > slope_tresh_vert:
-    #            pass
-    #        else:
+    #        m=(y2-y1)/(x2-x1)
+    #        if m_tresh_horiz < abs(m) < m_tresh_vert:
     #            cv2.line(img, (x1, y1), (x2, y2), color, thickness)
 
     #imshape = img.shape
