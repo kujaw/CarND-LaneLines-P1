@@ -21,10 +21,10 @@ Feel free to do anything with this project, play, expermient and if you have som
 Dependencies
 ---
 
--jupyter (1.0.0)
--numpy (1.13.3)
--opencv-python (3.3.0.10)
--Pillow (4.3.0)
--scipy (0.19.1)
--matplotlib (2.1.0)
--moviepy (0.2.3.2)
+- jupyter (1.0.0)
+- numpy (1.13.3)
+- opencv-python (3.3.0.10)
+- Pillow (4.3.0)
+- scipy (0.19.1)
+- matplotlib (2.1.0)
+- moviepy (0.2.3.2)
