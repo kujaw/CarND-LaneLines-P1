@@ -14,7 +14,8 @@ There are also three files included:
 - functions.py
 - videos.py
 - image.py
-These files are copies of algorithms from P1.ipynb, fitted to work without Jupyter Notebook.
+
+These files are copies of algorithms from P1.ipynb, set up to work without using Jupyter Notebook.
 
 Feel free to do anything with this project, play, expermient and if you have some advice how to improve it - please let me know.
 
